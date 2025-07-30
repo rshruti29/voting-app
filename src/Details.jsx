@@ -1,79 +1,87 @@
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import {useAuth} from './Authcontext';
-import {BarChart, ResponsiveContainer, Bar, XAxis,Tooltip } from 'recharts';
+import { useAuth } from './Authcontext';
+import { BarChart, ResponsiveContainer, Bar, XAxis, Tooltip, CartesianGrid, Legend } from 'recharts';
 import io from 'socket.io-client';
+import { useState, useEffect } from 'react';
 
 const socket = io("http://localhost:5000");
 
 const Details = () => {
-const {poll, setPoll} = useState(null);
-const {id} = useParams();
-const [selectedOption, setSelectedOption] = useState(null);
-const [message, setMessage] = useState("");
-const [loading, setLoading] = useState(true);
+  const [poll, setPoll] = useState(null);
+  const { id } = useParams();
+  const [selectedOption, setSelectedOption] = useState(null);
+  const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [voted, setVoted] = useState(false);
+  const { user } = useAuth();
 
-useEffect(() => {
-    const fetchPoll= async () => {
-        try {
-            const response = await axios.get(`http://localhost:5000/poll/${id}`);
-            setPoll(response.data);
-            setLoading(false);
-        } catch (error) {
-            console.error("Error fetching poll details:", error);
-            setMessage("Failed to load poll details.");
-            setLoading(false);
-        } }
-        fetchPoll();
+  useEffect(() => {
+    const fetchPoll = async () => {
+      try {
+        const response = await axios.get(`http://localhost:5000/api/polls/${id}`);
+        setPoll(response.data);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching poll details:", error);
+        setMessage("Failed to load poll details.");
+        setLoading(false);
+      }
+    };
 
-        return socket.on("voteUpdate", (updatedPoll) => {
-            if (updatedPoll._id === id) {
-                setPoll(updatedPoll);
-            }
-        });
+    fetchPoll();
 
-        return () => {
-            socket.off("voteUpdate");
-        };
+    const handleVoteUpdate = (updatedPoll) => {
+      if (updatedPoll._id === id) {
+        setPoll(updatedPoll);
+      }
+    };
 
-}, [id]);
+    socket.on("voteUpdate", handleVoteUpdate);
 
-const handleVote = async () => {
+    return () => {
+      socket.off("voteUpdate", handleVoteUpdate);
+    };
+  }, [id]);
+
+  const handleVote = async () => {
     if (selectedOption === null) {
-        alert("Please select an option to vote.");
-        return
+      alert("Please select an option to vote.");
+      return;
     }
+
     const userId = user ? user.id : null;
     if (!userId) {
-        alert("You must be logged in to vote.");
-        return;
+      alert("You must be logged in to vote.");
+      return;
     }
 
     try {
-        await axios.post(`http://localhost:5000/api/polls/${id}/vote`, {
-            optionIndex: selectedOption,    
-            userId: userId
-        })
-        
-        setMessage("Vote cast successfully!");
+      await axios.post(`http://localhost:5000/api/polls/${id}/vote`, {
+        optionIndex: selectedOption,
+        userId: userId,
+      });
+
+      setMessage("Vote cast successfully!");
+      setVoted(true);
+    } catch (error) {
+      console.error("Error casting vote:", error);
+      setMessage("Failed to cast vote. Please try again later.");
     }
-    catch (error) {
-        console.error("Error casting vote:", error);
-        setMessage("Failed to cast vote. Please try again later.");
-    }
-}
-    
-  if(loading){
+  };
+
+  if (loading) {
     return <div>Loading poll details...</div>;
   }
-  if(!poll){
+
+  if (!poll) {
     return <div>{message || "Poll not found."}</div>;
   }
 
   const totalVotes = poll.options.reduce((total, option) => total + option.votes, 0);
 
   return (
-<div className="min-h-screen bg-gradient-to-br from-blue-100 via-sky-200 to-indigo-100 px-6 py-10">
+    <div className="min-h-screen bg-gradient-to-br from-blue-100 via-sky-200 to-indigo-100 px-6 py-10">
       <div className="max-w-3xl mx-auto bg-white rounded-3xl shadow-xl p-8">
         <h1 className="text-3xl font-bold text-center text-indigo-600 mb-8">{poll.question}</h1>
 
@@ -142,6 +150,5 @@ const handleVote = async () => {
     </div>
   );
 };
-
 
 export default Details;

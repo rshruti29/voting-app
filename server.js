@@ -31,7 +31,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("disconnect", () => {
-    console.log("❌ Socket disconnected:", socket.id);
+    console.log("Socket disconnected:", socket.id);
   });
 });
 
@@ -53,7 +53,7 @@ const connectDB = async (retries = 5) => {
     await mongoose.connect("mongodb://127.0.0.1:27017/votingapp");
     console.log("✅ MongoDB connected successfully");
   } catch (err) {
-    console.error("❌ MongoDB connection error:", err);
+    console.error("MongoDB connection error:", err);
     if (retries > 0) {
       console.log(`Retrying connection... (${retries} attempts left)`);
       setTimeout(() => connectDB(retries - 1), 5000);
@@ -64,12 +64,12 @@ const connectDB = async (retries = 5) => {
 const PORT = 5000;
 connectDB().then(() => {
   server.listen(PORT, () => {
-    console.log(`🚀 Server + Socket.IO running at http://localhost:${PORT}`);
+    console.log(`Server + Socket.IO running at http://localhost:${PORT}`);
   });
 });
 
 app.use((err, req, res, next) => {
-  console.error('💥 Server Error:', err);
+  console.error('Server Error:', err);
   res.status(500).json({
     status: 'error',
     message: 'Internal server error'
