@@ -15,7 +15,11 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
         unique: true
-    }
+    },
+    votedPolls: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Poll"
+    }],
 });
 
 // Hash password middleware
