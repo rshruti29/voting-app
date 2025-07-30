@@ -73,53 +73,72 @@ const handleVote = async () => {
   const totalVotes = poll.options.reduce((total, option) => total + option.votes, 0);
 
   return (
-    <div className="poll-details-container">
-        <h1 className="poll-title">{poll.question}</h1>
-        <div className="options-container">
-            {poll.options.map((option, index) => {
-                const percentage =  totalVotes ? ((option.votes / poll.totalVotes) * 100).toFixed(2) : 0;
+<div className="min-h-screen bg-gradient-to-br from-blue-100 via-sky-200 to-indigo-100 px-6 py-10">
+      <div className="max-w-3xl mx-auto bg-white rounded-3xl shadow-xl p-8">
+        <h1 className="text-3xl font-bold text-center text-indigo-600 mb-8">{poll.question}</h1>
+
+        <div className="space-y-6">
+          {poll.options.map((option, index) => {
+            const percentage = totalVotes ? ((option.votes / totalVotes) * 100).toFixed(2) : 0;
+
             return (
-                <div key={index} className="option-items">
-                    <label>
-                        <input
-                        type="radio"
-                        name="pollOption"
-                        value={index}
-                        checked={selectedOption === index}
-                        onChange={() => setSelectedOption(index)}
-                    />
-                    {option.text} (Votes: {option.votes}- {percentage}%)
-                    </label>
+              <div key={index} className="border rounded-xl p-4 shadow-sm">
+                <label className="flex items-center gap-3">
+                  <input
+                    type="radio"
+                    name="pollOption"
+                    value={index}
+                    checked={selectedOption === index}
+                    onChange={() => setSelectedOption(index)}
+                    className="accent-indigo-600"
+                  />
+                  <span className="text-gray-700 font-medium">
+                    {option.text} — <span className="text-sm text-gray-500">{percentage}% ({option.votes} votes)</span>
+                  </span>
+                </label>
 
-                    <div className="progress-bar">
-                        <div className="progress"
-                            style={{ width: `${percentage}%`, backgroundColor: '#4caf50' }}
-                        ></div>
-                    </div>
-
-                    <button className="vote-button" onClick={handleVote}>Vote</button>
-                    {message && <p className="message">{message}</p>}
-
+                <div className="w-full bg-gray-200 h-3 rounded mt-2 overflow-hidden">
+                  <div
+                    className="h-full rounded bg-indigo-500 transition-all"
+                    style={{ width: `${percentage}%` }}
+                  ></div>
                 </div>
-                );      
-})}
+              </div>
+            );
+          })}
         </div>
 
-        <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={poll.options.map((option,index) => ({
+        <div className="mt-6 text-center">
+          <button
+            className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg font-semibold transition"
+            onClick={handleVote}
+            disabled={voted}
+          >
+            {voted ? "Thank you for voting!" : "Vote"}
+          </button>
+        </div>
+
+        {message && <p className="text-center text-sm text-indigo-700 mt-3">{message}</p>}
+
+        <div className="mt-10">
+          <h3 className="text-xl font-semibold text-gray-700 mb-4">Results Overview</h3>
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart
+              data={poll.options.map(option => ({
                 name: option.text,
                 votes: option.votes,
-                percentage: totalVotes ? ((option.votes / totalVotes) * 100).toFixed(2) : 0
-            })
-            
-            )}>
-                <CartesianGrid strokeDasharray = '3 3'/>
-                <XAxis dataKey="name" />
-                <Tooltip/>
-                <Legend/>
-                <Bar dataKey = "votes" fill="#825678"></Bar>
+                percentage: totalVotes ? ((option.votes / totalVotes) * 100).toFixed(2) : 0,
+              }))}
+            >
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="votes" fill="#5A67D8" radius={[4, 4, 0, 0]} />
             </BarChart>
-        </ResponsiveContainer>
+          </ResponsiveContainer>
+        </div>
+      </div>
     </div>
   );
 };

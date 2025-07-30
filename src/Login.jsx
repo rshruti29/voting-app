@@ -1,54 +1,48 @@
-import React, { useState } from 'react'
-import { Link, useNavigate } from "react-router-dom"
-import axios from "axios"
+import React, { useState } from 'react';
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Login = () => {
-    const navigate = useNavigate()
-    
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
-    const [error, setError] = useState("")
-    const [loading, setLoading] = useState(false)
+  const navigate = useNavigate();
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setError("");
-        setLoading(true);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-        try {
-            const response = await axios.post(
-                "http://localhost:5000/api/auth/login",
-                {
-                    username,
-                    email,
-                    password
-                },
-                {
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                }
-            );
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
 
-            console.log('Registration Response:', response.data);
+    try {
+      console.log("Logging in with:", { email, password }); 
 
-            if (response.data.token) {
-                localStorage.setItem('token', response.data.token);
-                alert("Registration Successful!");
-                navigate("/login");
-            } else {
-                setError("Registration successful but no token received");
-            }
-        } catch (err) {
-            console.error("Registration Error:", err.response?.data || err);
-            setError(err.response?.data?.message || "Registration failed. Please try again.");
-        } finally {
-            setLoading(false);
-        }
+      const response = await axios.post(
+        "http://localhost:5000/api/auth/login",
+        { email, password },
+        { headers: { 'Content-Type': 'application/json' } }
+      );
+
+      console.log("Login response:", response.data); 
+
+      if (response.data.token) {
+        localStorage.setItem('token', response.data.token);
+        alert("Login Successful!");
+        navigate("/dash");
+      } else {
+        setError("Login successful but no token received");
+      }
+    } catch (err) {
+      console.error("Login error:", err.response?.data || err);
+      setError(err.response?.data?.message || "Login failed. Please try again.");
+    } finally {
+      setLoading(false);
     }
+  };
 
-    return (
-                 <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 via-sky-200 to-indigo-200 px-4 py-12">
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 via-sky-200 to-indigo-200 px-4 py-12">
       <div className="w-full max-w-md bg-white rounded-3xl shadow-2xl p-8">
         <h2 className="text-4xl font-bold text-center text-indigo-600 mb-6">Login</h2>
 
@@ -87,9 +81,17 @@ const Login = () => {
 
           {error && <p className="text-red-600 text-sm text-center mt-2">{error}</p>}
         </form>
+
+        <p className="mt-6 text-sm text-center text-gray-600">
+          Don't have an account?{" "}
+          <Link to="/" className="text-indigo-500 font-semibold hover:underline">
+            Register
+          </Link>
+        </p>
       </div>
     </div>
-    )
-}
+  );
+};
 
-export default Login
+export default Login;
+

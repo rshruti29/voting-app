@@ -19,20 +19,27 @@ const Dashboard = () => {
 
 
   return (
-    <div className="dashboard-container">
-      <h1>All Polls</h1>
-      {polls.length === 0 ? (
-        <p>No polls available</p>) : (
-          <div className="polls-grid">
-            {polls.map(poll => (
-              <div key={poll.id} className="poll-item">
-                <Link to={`/poll/${poll.id}`} className="poll-link">
-                {poll.question}
-                </Link>
-              </div>
+    <div className="min-h-screen bg-gradient-to-br from-blue-100 via-sky-200 to-indigo-100 px-6 py-12">
+      <div className="max-w-5xl mx-auto">
+        <h1 className="text-4xl font-bold text-center text-indigo-700 mb-10">All Polls</h1>
+
+        {polls.length === 0 ? (
+          <p className="text-center text-gray-600 text-lg">No polls available</p>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            {polls.map((poll) => (
+              <Link
+                to={`/poll/${poll.id}`}
+                key={poll.id}
+                className="bg-white rounded-2xl shadow-md p-6 hover:shadow-xl transition hover:-translate-y-1 border border-gray-100"
+              >
+                <h2 className="text-lg font-semibold text-indigo-600">{poll.question}</h2>
+                <p className="text-sm text-gray-500 mt-2">Click to view and vote</p>
+              </Link>
             ))}
-    </div>
+          </div>
         )}
+      </div>
     </div>
   )}
 
