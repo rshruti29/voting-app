@@ -4,6 +4,7 @@ import Login from "./Login"
 import './App.css'
 import Dashboard from "./Dashboard"
 import { AuthProvider } from "./Authcontext"
+import CreatePoll from "./CreatePoll"   
 
 function App() {
     const router = createBrowserRouter([
@@ -18,6 +19,10 @@ function App() {
         {
             path: "/dash",
             element: <Dashboard />
+        },
+         {
+            path: "/create",
+            element: <CreatePoll/>
         }
     ])
 
