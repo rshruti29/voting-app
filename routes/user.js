@@ -66,5 +66,52 @@ router.post("/register", async (req, res) => {
         });
     }
 });
+router.post("/login", async (req, res) => {
+    const { email, password } = req.body;
 
+    try {
+        // Find user by email   
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(400).json({ 
+                success: false,
+                message: "Invalid email or password" 
+            });
+        }
+
+        // Check password
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(400).json({ 
+                success: false,
+                message: "Invalid email or password" 
+            });
+        }
+        // Generate JWT
+        const token = jwt.sign(
+            { 
+                userId: user._id,
+                username: user.username 
+            }, 
+            JWT_SECRET,
+            { expiresIn: '1h' }
+        );
+        // Send response
+        res.json({
+            token,
+            userId: user._id,
+            username: user.username,
+            email: user.email,
+            success: true, 
+            message: "Login successful"
+        });
+    } catch (error) {
+        console.error('Login error:', error);
+        res.status(500).json({ 
+            success: false,
+            message: "Login failed", 
+            error: error.message 
+        });
+    }
+});
 export default router;
