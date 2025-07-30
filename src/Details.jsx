@@ -1,9 +1,10 @@
-import React from 'react'
-import PropTypes from 'prop-types'
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import {useAuth} from './Authcontext';
-import {BarChart, ResponsiveContainer} from 'recharts';
+import {BarChart, ResponsiveContainer, Bar, XAxis,Tooltip } from 'recharts';
+import io from 'socket.io-client';
+
+const socket = io("http://localhost:5000");
 
 const Details = () => {
 const {poll, setPoll} = useState(null);
@@ -24,6 +25,17 @@ useEffect(() => {
             setLoading(false);
         } }
         fetchPoll();
+
+        return socket.on("voteUpdate", (updatedPoll) => {
+            if (updatedPoll._id === id) {
+                setPoll(updatedPoll);
+            }
+        });
+
+        return () => {
+            socket.off("voteUpdate");
+        };
+
 }, [id]);
 
 const handleVote = async () => {

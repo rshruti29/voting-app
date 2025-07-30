@@ -33,7 +33,6 @@ const Login = () => {
             console.log('Registration Response:', response.data);
 
             if (response.data.token) {
-                // Store token in localStorage
                 localStorage.setItem('token', response.data.token);
                 alert("Registration Successful!");
                 navigate("/login");
@@ -49,45 +48,47 @@ const Login = () => {
     }
 
     return (
-        <div className="container">
-            <form className="register-form" onSubmit={handleSubmit}>
-                <h2>Register</h2>
-                
+                 <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 via-sky-200 to-indigo-200 px-4 py-12">
+      <div className="w-full max-w-md bg-white rounded-3xl shadow-2xl p-8">
+        <h2 className="text-4xl font-bold text-center text-indigo-600 mb-6">Login</h2>
 
-                <div className="input-group">
-                    <label>Email</label>
-                    <input 
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                    />
-                </div>
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              className="w-full px-4 py-2 rounded-xl border border-gray-300 focus:ring-2 focus:ring-sky-400 outline-none transition"
+            />
+          </div>
 
-                <div className="input-group">
-                    <label>Password</label>
-                    <input 
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                        minLength={6}
-                    />
-                </div>
-                
-                <button 
-                    type="submit" 
-                    className="submit-button"
-                    disabled={loading}
-                >
-                    {loading ? "Loging in..." : "Login"}
-                </button>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              minLength={6}
+              className="w-full px-4 py-2 rounded-xl border border-gray-300 focus:ring-2 focus:ring-indigo-500 outline-none transition"
+            />
+          </div>
 
-                {error && <p className="error-message">{error}</p>}
-                
-                
-            </form>
-        </div>
+          <button
+            type="submit"
+            disabled={loading}
+            className={`w-full py-2 rounded-xl font-semibold text-white transition-all duration-200 
+              ${loading ? 'bg-indigo-300' : 'bg-indigo-600 hover:bg-indigo-700'}`}
+          >
+            {loading ? "Logging in..." : "Login"}
+          </button>
+
+          {error && <p className="text-red-600 text-sm text-center mt-2">{error}</p>}
+        </form>
+      </div>
+    </div>
     )
 }
 
