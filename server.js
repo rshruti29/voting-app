@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import bodyParser from "body-parser";
 import cors from "cors";
 import authRoutes from "./routes/user.js";
+import pollRoutes from "./routes/poll.js";
 
 const app = express();
 
@@ -23,6 +24,7 @@ app.get('/health', (req, res) => {
 
 // Mount routes
 app.use("/api/auth", authRoutes);
+app.use("/api/polls", pollRoutes);
 
 // MongoDB connection with simplified options
 const connectDB = async (retries = 5) => {

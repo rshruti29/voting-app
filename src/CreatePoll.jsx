@@ -63,7 +63,7 @@ const CreatePoll = () => {
                     </div>
                 ))}
                 <button type="button" onClick={addOption}>Add Option</button>
-                <button type="submit">Create Poll</button>
+                <button type="submit" className='Submit-button'>Create Poll</button>
             </form>
         </div>
     );
