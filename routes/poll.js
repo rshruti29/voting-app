@@ -28,8 +28,10 @@ router.post("/create", async (req, res) => {
 });
 router.get("/all", async (req, res) => {
     try {
-        const polls = await Poll.find().populate("createdBy", "username");
+        const polls = await Poll.find();
         res.status(200).json({polls});
+        console.log("✅ Sending polls:", polls.length);  
+
     }catch(error){
         console.error(error);
     }
