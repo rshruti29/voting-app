@@ -13,7 +13,7 @@ const app = express();
 app.use(express.json());
 app.use(bodyParser.json());
 
-
+const allowedOrigin = "https://voting-app-ten-sigma.vercel.app";
 
 const server = http.createServer(app);       
 const io = new Server(server, {
@@ -35,7 +35,7 @@ io.on("connection", (socket) => {
   });
 });
 
-const allowedOrigin = "https://voting-app-ten-sigma.vercel.app";
+
 
 app.use(cors({
   origin: allowedOrigin,
