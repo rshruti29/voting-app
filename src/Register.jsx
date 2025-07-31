@@ -17,7 +17,7 @@ const Register = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/auth/register",
+        "https://voting-app-99th.onrender.com/api/auth/register",
         { username, email, password },
         { headers: { 'Content-Type': 'application/json' } }
       );

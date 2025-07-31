@@ -33,7 +33,7 @@ const CreatePoll = () => {
     }
 
     try {
-      await axios.post('http://localhost:5000/api/polls/create', {
+      await axios.post('https://voting-app-99th.onrender.com/api/polls/create', {
         question,
         options
       });

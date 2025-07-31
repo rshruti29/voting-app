@@ -13,6 +13,10 @@ const app = express();
 app.use(express.json());
 app.use(bodyParser.json());
 
+app.use(cors({
+  origin: "https://your-frontend.vercel.app",
+  credentials: true 
+}));
 
 const server = http.createServer(app);       
 

@@ -43,7 +43,7 @@ const Details = () => {
   useEffect(() => {
     const fetchPoll = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/polls/${id}`);
+        const response = await axios.get(`https://voting-app-99th.onrender.com/api/polls/${id}`);
         setPoll(response.data);
         setLoading(false);
       } catch (error) {
@@ -81,7 +81,7 @@ const Details = () => {
     }
 
     try {
-      await axios.post(`http://localhost:5000/api/polls/${id}/vote`, {
+      await axios.post(`https://voting-app-99th.onrender.com/api/polls/${id}/vote`, {
         optionIndex: selectedOption,
         userId: userId,
       });
