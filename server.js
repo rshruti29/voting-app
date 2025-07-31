@@ -46,6 +46,10 @@ app.get('/health', (req, res) => {
   res.json({ status: 'ok', mongodb: mongoose.connection.readyState === 1 });
 });
 
+app.get('/', (req, res) => {
+  res.send('🎉 Backend is running!');
+});
+
 app.use("/api/auth", authRoutes);
 app.use("/api/polls", pollRoutes);
 
@@ -68,6 +72,8 @@ connectDB().then(() => {
     console.log(`Server + Socket.IO running at http://localhost:${PORT}`);
   });
 });
+
+
 
 app.use((err, req, res, next) => {
   console.error('Server Error:', err);
