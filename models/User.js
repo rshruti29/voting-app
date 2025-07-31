@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 
+
 const userSchema = new mongoose.Schema({
     username: {
         type: String,
@@ -20,6 +21,10 @@ const userSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Poll"
     }],
+    isAdmin: {
+        type: Boolean,
+        default: false
+    }
 });
 
 export default mongoose.model("User", userSchema);

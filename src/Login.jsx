@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useAuth } from "./Authcontext";
 
 const Login = () => {
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -28,6 +30,7 @@ const Login = () => {
 
       if (response.data.token) {
         localStorage.setItem('token', response.data.token);
+        login(response.data.user);
         alert("Login Successful!");
         navigate("/dash");
       } else {
