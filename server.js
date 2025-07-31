@@ -55,7 +55,7 @@ app.use("/api/polls", pollRoutes);
 
 const connectDB = async (retries = 5) => {
   try {
-    await mongoose.connect("mongodb+srv://mendoncashalom27:XvIfPz0T9I1u2iQf@cluster0.akmyeq3.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0");
+    await mongoose.connect("mongodb+srv://mendoncashalom27:XvIfPz0T9I1u2iQf@cluster0.akmyeq3.mongodb.net/voting-app?retryWrites=true&w=majority&appName=Cluster0");
     console.log("MongoDB connected successfully");
   } catch (err) {
     console.error("MongoDB connection error:", err);
@@ -69,7 +69,7 @@ const connectDB = async (retries = 5) => {
 const PORT = 5000;
 connectDB().then(() => {
   server.listen(PORT, () => {
-    console.log(`Server + Socket.IO running at http://localhost:${PORT}`);
+    console.log(`Server + Socket.IO running at https://voting-app-3eju.onrender.com/`);
   });
 });
 

@@ -21,7 +21,7 @@ const Login = () => {
       console.log("Logging in with:", { email, password }); 
 
       const response = await axios.post(
-        "http://localhost:5000/api/auth/login",
+        "https://voting-app-3eju.onrender.com/api/auth/login",
         { email, password },
         { headers: { 'Content-Type': 'application/json' } }
       );

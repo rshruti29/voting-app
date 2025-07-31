@@ -5,7 +5,7 @@ import { BarChart, ResponsiveContainer, Bar, XAxis, Tooltip, CartesianGrid, Lege
 import io from 'socket.io-client';
 import { useState, useEffect } from 'react';
 
-const socket = io("http://localhost:5000");
+const socket = io("https://voting-app-3eju.onrender.com/");
 
 const professionalBgStyle = {
   background: 'linear-gradient(135deg, #667eea 0%, #764ba2 25%)',

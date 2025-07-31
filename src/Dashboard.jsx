@@ -116,9 +116,9 @@ const Dashboard = () => {
   const handleDelete = async (pollId) => {
     if (!window.confirm('Are you sure you want to delete this poll?')) return;
     try {
-      await axios.delete(`http://localhost:5000/api/polls/${pollId}/delete`, {
-        data: { userId: user.id },
-      });
+      await axios.delete(`https://voting-app-3eju.onrender.com/api/polls/${pollId}/delete`, {
+  data: { userId: user.id },
+});
       setPolls(prev => prev.filter(p => p._id !== pollId));
     } catch {
       alert('Failed to delete poll.');
@@ -128,7 +128,7 @@ const Dashboard = () => {
   const handleEditSave = async (data) => {
     setEditLoading(true);
     try {
-      const res = await axios.put(`http://localhost:5000/api/polls/${editPoll._id}/edit`, {
+      const res = await axios.put(`https://voting-app-3eju.onrender.com/api/polls/${editPoll._id}/edit`, {
         userId: user.id,
         question: data.question,
         options: data.options,
@@ -145,7 +145,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchPolls = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/polls/all');
+        const response = await axios.get('https://voting-app-3eju.onrender.com/api/polls/all');
         setPolls(response.data.polls);
       } catch (error) {
         console.error('Error fetching polls:', error);
