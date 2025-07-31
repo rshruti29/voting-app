@@ -7,14 +7,12 @@ import { useState, useEffect } from 'react';
 
 const socket = io("http://localhost:5000");
 
-// Professional background style matching Dashboard
 const professionalBgStyle = {
-  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #f5576c 75%, #4facfe 100%)',
+  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 25%)',
   backgroundSize: '400% 400%',
   animation: 'professionalGradient 20s ease infinite',
 };
 
-// Floating particles effect
 const FloatingParticles = () => (
   <div className="fixed inset-0 overflow-hidden pointer-events-none">
     {[...Array(15)].map((_, i) => (
@@ -127,23 +125,10 @@ const Details = () => {
 
   return (
     <div className="min-h-screen flex flex-col relative" style={professionalBgStyle}>
-      <FloatingParticles />
       
-      {/* Professional Header */}
-      <div className="relative z-10 bg-white/90 backdrop-blur-xl shadow-2xl px-6 sm:px-8 py-6 mb-8">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <Link to="/dash" className="text-2xl font-black bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-            Tallyfy
-          </Link>
-          <div className="flex items-center gap-4">
-            <span className="text-slate-700 font-medium">Poll Details</span>
-            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-          </div>
-        </div>
-      </div>
-
+      
       {/* Main Content */}
-      <div className="flex-1 max-w-6xl mx-auto px-6 pb-12">
+      <div className="flex-1 max-w-6xl mx-auto px-6 pb-12 pt-12">
         <div className="bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 p-8 sm:p-12">
           
           {/* Poll Question */}
@@ -151,13 +136,12 @@ const Details = () => {
             <h1 className="text-3xl sm:text-4xl font-bold text-slate-800 mb-4 leading-tight">
               {poll.question}
             </h1>
-            <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto rounded-full mb-4"></div>
+            <div className="w-24 h-1 bg-blue-500 mx-auto rounded-full mb-4"></div>
             <p className="text-slate-600 text-lg">
               Total Votes: <span className="font-bold text-blue-600">{totalVotes}</span>
             </p>
           </div>
 
-          {/* Voting Options */}
           {!voted && (
             <div className="mb-12">
               <h2 className="text-2xl font-bold text-slate-800 mb-6 text-center">Cast Your Vote</h2>
@@ -192,17 +176,16 @@ const Details = () => {
                               <span className="text-sm text-slate-600">
                                 {option.votes} votes ({percentage}%)
                               </span>
-                              <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white text-xs font-bold">
+                              <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-xs font-bold">
                                 {index + 1}
                               </div>
                             </div>
                           </div>
                         </div>
                         
-                        {/* Progress Bar */}
                         <div className="w-full bg-slate-200 h-2 rounded-full mt-3 overflow-hidden">
                           <div
-                            className="h-full bg-gradient-to-r from-blue-500 to-purple-500 transition-all duration-1000 ease-out"
+                            className="h-full bg-blue-500 transition-all duration-1000 ease-out"
                             style={{ width: `${percentage}%` }}
                           ></div>
                         </div>
@@ -216,7 +199,7 @@ const Details = () => {
                 <button
                   className={`px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 shadow-lg transform hover:scale-105 ${
                     selectedOption !== null
-                      ? 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white'
+                      ? 'bg-blue-600 text-white'
                       : 'bg-slate-300 text-slate-500 cursor-not-allowed'
                   }`}
                   onClick={handleVote}
@@ -228,7 +211,6 @@ const Details = () => {
             </div>
           )}
 
-          {/* Success Message */}
           {voted && (
             <div className="text-center mb-12">
               <div className="w-20 h-20 bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -241,13 +223,11 @@ const Details = () => {
             </div>
           )}
 
-          {/* Results Section */}
           <div className="space-y-8">
             <div className="text-center">
               <h2 className="text-2xl font-bold text-slate-800 mb-6">Poll Results</h2>
             </div>
 
-            {/* Results Cards */}
             <div className="grid gap-6 mb-8">
               {poll.options.map((option, index) => {
                 const percentage = totalVotes ? ((option.votes / totalVotes) * 100).toFixed(1) : 0;
@@ -267,8 +247,8 @@ const Details = () => {
                       <div className="flex items-center gap-4">
                         <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-white font-bold text-lg shadow-lg ${
                           isWinning 
-                            ? 'bg-gradient-to-r from-yellow-500 to-orange-500' 
-                            : 'bg-gradient-to-r from-blue-500 to-purple-500'
+                            ? 'bg-yellow-500' 
+                            : 'bg-blue-500'
                         }`}>
                           {isWinning ? '🏆' : `${index + 1}`}
                         </div>
@@ -297,8 +277,8 @@ const Details = () => {
                       <div
                         className={`h-full transition-all duration-1000 ease-out ${
                           isWinning 
-                            ? 'bg-gradient-to-r from-yellow-500 to-orange-500' 
-                            : 'bg-gradient-to-r from-blue-500 to-purple-500'
+                            ? 'bg-yellow-500' 
+                            : 'bg-blue-500'
                         }`}
                         style={{ width: `${percentage}%` }}
                       ></div>
@@ -308,9 +288,7 @@ const Details = () => {
               })}
             </div>
 
-            {/* Charts */}
             <div className="grid lg:grid-cols-2 gap-8">
-              {/* Bar Chart */}
               <div className="bg-white rounded-2xl p-6 shadow-lg border border-slate-200">
                 <h3 className="text-xl font-bold text-slate-800 mb-4 text-center">Vote Distribution</h3>
                 <ResponsiveContainer width="100%" height={300}>
@@ -372,11 +350,10 @@ const Details = () => {
             </div>
           </div>
 
-          {/* Action Buttons */}
           <div className="text-center mt-12 space-x-4">
             <Link
               to="/dash"
-              className="inline-block bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-3 rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 transform"
+              className="inline-block bg-blue-600 text-white px-8 py-3 rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 transform"
             >
               Back to Dashboard
             </Link>
@@ -390,7 +367,6 @@ const Details = () => {
         </div>
       </div>
 
-      {/* Success Message Toast */}
       {message && (
         <div className="fixed bottom-6 right-6 bg-green-500 text-white px-6 py-3 rounded-xl shadow-lg z-50 animate-fadeIn">
           {message}
