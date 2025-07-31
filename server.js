@@ -16,14 +16,13 @@ app.use(bodyParser.json());
 
 
 const server = http.createServer(app);       
-
 const io = new Server(server, {
   cors: {
-    origin: 'https://voting-app-ten-sigma.vercel.app',
-    methods: ['GET', 'POST']
+    origin: allowedOrigin,  // Use the variable you defined
+    methods: ['GET', 'POST'],
+    credentials: true       // Add this from the second declaration
   }
 });
-
 io.on("connection", (socket) => {
   console.log("🔌 New socket connected:", socket.id);
 
@@ -43,14 +42,6 @@ app.use(cors({
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE']
 }));
-
-const io = new Server(server, {
-  cors: {
-    origin: allowedOrigin,
-    methods: ['GET', 'POST'],
-    credentials: true
-  }
-});
 
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', mongodb: mongoose.connection.readyState === 1 });
