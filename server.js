@@ -50,8 +50,8 @@ app.use("/api/polls", pollRoutes);
 
 const connectDB = async (retries = 5) => {
   try {
-    await mongoose.connect("mongodb://127.0.0.1:27017/votingapp");
-    console.log("✅ MongoDB connected successfully");
+    await mongoose.connect("mongodb+srv://mendoncashalom27:XvIfPz0T9I1u2iQf@cluster0.akmyeq3.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0");
+    console.log("MongoDB connected successfully");
   } catch (err) {
     console.error("MongoDB connection error:", err);
     if (retries > 0) {

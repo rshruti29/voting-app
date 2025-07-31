@@ -38,7 +38,7 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 via-sky-200 to-indigo-200 px-4 py-12">
+    <div className="min-h-screen flex items-center justify-center px-4 py-12" style={{ backgroundColor: '#764ba2' }}>
       <div className="w-full max-w-md bg-white rounded-3xl shadow-2xl p-8">
         <h2 className="text-4xl font-bold text-center text-indigo-600 mb-6">
           Register
