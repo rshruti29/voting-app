@@ -8,7 +8,7 @@ const JWT_SECRET = "your_secret_key";
 
 router.post("/register", async (req, res) => {
   try {
-    const { username, email, password } = req.body;
+    const { username, email, password, isAdmin } = req.body;
     
     if (!username || !email || !password) {
       return res.status(400).json({
@@ -35,6 +35,7 @@ router.post("/register", async (req, res) => {
       username,
       email: email.toLowerCase(),
       password: hashedPassword,
+      isAdmin: isAdmin || false
     });
 
     await user.save();
@@ -43,6 +44,7 @@ router.post("/register", async (req, res) => {
       {
         userId: user._id,
         username: user.username,
+        isAdmin: user.isAdmin
       },
       JWT_SECRET,
       { expiresIn: "1h" }
@@ -60,6 +62,7 @@ console.log("  Hashed Password:", hashedPassword);
         id: user._id,
         username: user.username,
         email: user.email,
+        isAdmin: user.isAdmin
       },
     });
   } catch (error) {
@@ -101,7 +104,7 @@ router.post("/login", async (req, res) => {
       return res.status(400).json({ error: "Invalid email or password" });
     }
 
-    const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: "1h" });
+    const token = jwt.sign({ id: user._id, isAdmin: user.isAdmin }, JWT_SECRET, { expiresIn: "1h" });
 
     console.log("Login successful!");
     res.json({
@@ -111,6 +114,7 @@ router.post("/login", async (req, res) => {
         id: user._id,
         username: user.username,
         email: user.email,
+        isAdmin: user.isAdmin
       },
     });
   } catch (err) {

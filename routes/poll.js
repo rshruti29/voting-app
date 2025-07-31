@@ -86,5 +86,54 @@ router.post("/:id/vote", async (req, res) => {
     }
 });
 
+// Edit poll (admin only)
+router.put('/:id/edit', async (req, res) => {
+    const { userId, question, options } = req.body;
+    if (!userId) {
+        return res.status(400).json({ error: 'User ID required' });
+    }
+    const user = await User.findById(userId);
+    if (!user || !user.isAdmin) {
+        return res.status(403).json({ error: 'Admin access required' });
+    }
+    try {
+        const poll = await Poll.findById(req.params.id);
+        if (!poll) {
+            return res.status(404).json({ error: 'Poll not found' });
+        }
+        if (question) poll.question = question;
+        if (options && Array.isArray(options) && options.length >= 2) {
+            poll.options = options.map(option => ({ text: option, votes: 0 }));
+        }
+        await poll.save();
+        res.status(200).json({ success: true, poll });
+    } catch (error) {
+        console.error('Error editing poll:', error);
+        res.status(500).json({ error: 'Error editing poll' });
+    }
+});
+
+// Delete poll (admin only)
+router.delete('/:id/delete', async (req, res) => {
+    const { userId } = req.body;
+    if (!userId) {
+        return res.status(400).json({ error: 'User ID required' });
+    }
+    const user = await User.findById(userId);
+    if (!user || !user.isAdmin) {
+        return res.status(403).json({ error: 'Admin access required' });
+    }
+    try {
+        const poll = await Poll.findByIdAndDelete(req.params.id);
+        if (!poll) {
+            return res.status(404).json({ error: 'Poll not found' });
+        }
+        res.status(200).json({ success: true, message: 'Poll deleted' });
+    } catch (error) {
+        console.error('Error deleting poll:', error);
+        res.status(500).json({ error: 'Error deleting poll' });
+    }
+});
+
 
 export default router;
