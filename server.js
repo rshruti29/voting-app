@@ -36,11 +36,21 @@ io.on("connection", (socket) => {
   });
 });
 
+const allowedOrigin = "https://voting-app-ten-sigma.vercel.app";
+
 app.use(cors({
-  origin: "https://voting-app-ten-sigma.vercel.app/",
-  credentials: true ,
+  origin: allowedOrigin,
+  credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE']
 }));
+
+const io = new Server(server, {
+  cors: {
+    origin: allowedOrigin,
+    methods: ['GET', 'POST'],
+    credentials: true
+  }
+});
 
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', mongodb: mongoose.connection.readyState === 1 });
