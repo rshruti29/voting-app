@@ -315,7 +315,6 @@ const Details = () => {
                 </ResponsiveContainer>
               </div>
 
-              {/* Pie Chart */}
               <div className="bg-white rounded-2xl p-6 shadow-lg border border-slate-200">
                 <h3 className="text-xl font-bold text-slate-800 mb-4 text-center">Results Overview</h3>
                 <ResponsiveContainer width="100%" height={300}>
