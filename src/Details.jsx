@@ -356,13 +356,7 @@ const Details = () => {
               className="inline-block bg-blue-600 text-white px-8 py-3 rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 transform"
             >
               Back to Dashboard
-            </Link>
-            <button
-              onClick={() => window.location.reload()}
-              className="inline-block bg-gradient-to-r from-slate-600 to-slate-700 hover:from-slate-700 hover:to-slate-800 text-white px-8 py-3 rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 transform"
-            >
-              Refresh Results
-            </button>
+            </Link>           
           </div>
         </div>
       </div>
